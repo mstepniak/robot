@@ -19,8 +19,9 @@ public class Measurement extends Thread {
     private Thread t;
     private String threadName;
     private int measurementLength;
-    private final String serverAddress = "localhost";
-
+    //private final String serverAddress = "141.58.102.110";
+    //private final String serverAddress = "localhost";
+    private final String serverAddress = "169.254.58.190";
 
     Measurement(String name, int length) {
         threadName = name;
@@ -57,7 +58,7 @@ public class Measurement extends Thread {
         System.out.println("from robot " + timeStamp + ":" + millis);
         */
 
-        Socket socket = new Socket(serverAddress, 9090);
+        Socket socket = new Socket(serverAddress, 1004); //5001 or 9090 for localhost
         BufferedReader input =
                 new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String answer = input.readLine();

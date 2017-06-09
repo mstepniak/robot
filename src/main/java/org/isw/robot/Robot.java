@@ -24,13 +24,14 @@ public class Robot {
         switch (arg1){
             case "MEASURE": {
                 System.out.println("measuring");
-                Scanner reader = new Scanner(System.in);  // Reading from System.in
-                System.out.println("Enter a number: ");
-                int length = reader.nextInt(); // Scans the next token of the input as an int.
-                //Measurement T1 = new Measurement("Robot", length);
-                Measurement T2 = new Measurement("Sensor", length);
-                //T1.start();
-                T2.start();
+                int length = 2;
+                //Scanner reader = new Scanner(System.in);  // Reading from System.in
+                //System.out.println("Enter a number: ");
+                //int length = reader.nextInt(); // Scans the next token of the input as an int.
+                Measurement T1 = new Measurement("Robot", length);
+                //Measurement T2 = new Measurement("Sensor", length);
+                T1.start();
+                //T2.start();
                 break;
             }
             case "FILES": {
