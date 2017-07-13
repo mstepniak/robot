@@ -1,14 +1,9 @@
 package org.isw.robot;
 
-import jssc.SerialPort;
-import jssc.SerialPortException;
-import jssc.SerialPortList;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Author MichalS.
@@ -71,19 +66,5 @@ public class Measurement extends Thread {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         System.out.println("from sensor " + timeStamp + ":" + millis);
         */
-
-        String[] ports = SerialPortList.getPortNames();
-        SerialPort serialPort = new SerialPort(ports[0]);
-
-        try {
-            serialPort.openPort();//Open serial port
-            serialPort.setParams(9600, 8, 1, 0);//Set params.
-            byte[] buffer = serialPort.readBytes(4);//Read 4 bytes from serial port
-            String str = new String(buffer, StandardCharsets.UTF_8);
-            System.out.print(str);
-            serialPort.closePort();//Close serial port
-        } catch (SerialPortException ex) {
-            System.out.println(ex);
-        }
     }
 }

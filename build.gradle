@@ -11,6 +11,9 @@ repositories {
 
 dependencies {
 
-    compile group: 'org.scream3r', name: 'jssc', version: '2.8.0'
+    compile group: 'com.pi4j', name: 'pi4j-core', version: '1.1'
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    //compile group: 'com.diozero', name: 'diozero-core', version: '0.10'
+    compile group: 'com.github.jinahya', name: 'java-me-sdk-installer', version: '0.4', ext: 'pom'
 }

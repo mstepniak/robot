@@ -1,7 +1,6 @@
 package org.isw.robot;
 
 import java.io.File;
-import java.util.Scanner;
 
 /**
  * Author MichalS.

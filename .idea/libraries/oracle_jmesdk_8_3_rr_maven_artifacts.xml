@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="oracle-jmesdk-8-3-rr-maven-artifacts">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../pliki/oracle-jmesdk-8-3-rr-maven-artifacts" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../pliki/oracle-jmesdk-8-3-rr-maven-artifacts" recursive="false" />
+  </library>
+</component>
