@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Programs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.staubli.com/robotics/VAL3/Program/2">
+<Program name="start">
+<Code><![CDATA[begin
+clearBuffer(sCal)
+taskCreateSync "multi", 0.05, bmulti, multi()
+movej(jstart,tGripper,mNomSpeed)
+waitEndMove()
+taskSuspend("multi")
+//operation that does not require sending of data can be performed here
+taskResume("multi",1)
+movej(jend,tGripper,mNomSpeed)
+waitEndMove()
+taskSuspend("multi")
+taskKill("multi")
+end]]></Code>
+</Program>
+</Programs>
