@@ -13,7 +13,7 @@ public class Management {
             T2.start();
         } catch (Exception e)
         {
-            //do something
+            System.out.println(e);
         }
     }
 }

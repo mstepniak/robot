@@ -45,6 +45,18 @@ public class MeasureServer extends Thread {
         return activeFor >= 0 && activeFor <= DURATION;
     }
 
+    private static String decimal2Hex(int d) {
+        String digits = "0123456789ABCDEF";
+        if (d == 0) return "0";
+        String hex = "";
+        while (d > 0) {
+            int digit = d % 16;                // rightmost digit
+            hex = digits.charAt(digit) + hex;  // string concatenation
+            d = d / 16;
+        }
+        return hex;
+    }
+
     public void run() {
         System.out.println("Running " + threadName);
         if (threadName.equalsIgnoreCase("Robot")) {
@@ -96,11 +108,9 @@ public class MeasureServer extends Thread {
             serverSocket.receive(receivePacket);
             //starting of generation of sensor logs
             activate();
-            //milliSeconds = dateFormat.format(System.currentTimeMillis());
             timeStamp = MicroTimestamp.INSTANCE.getMicro();
 
             String sentence = new String(receivePacket.getData());
-
             dxCord = ByteBuffer.wrap(Arrays.copyOfRange(receiveData, 0, 8)).order(ByteOrder.BIG_ENDIAN).getDouble();
             dyCord = ByteBuffer.wrap(Arrays.copyOfRange(receiveData, 8, 16)).order(ByteOrder.BIG_ENDIAN).getDouble();
             dzCord = ByteBuffer.wrap(Arrays.copyOfRange(receiveData, 16, 24)).order(ByteOrder.BIG_ENDIAN).getDouble();
@@ -108,8 +118,7 @@ public class MeasureServer extends Thread {
             dryCord = ByteBuffer.wrap(Arrays.copyOfRange(receiveData, 32, 40)).order(ByteOrder.BIG_ENDIAN).getDouble();
             drzCord = ByteBuffer.wrap(Arrays.copyOfRange(receiveData, 40, 48)).order(ByteOrder.BIG_ENDIAN).getDouble();
 
-            message = timeStamp + ", " + dxCord + ", " + dyCord + ", " + dzCord + ", " + drxCord + ", " + dryCord + ", " + drzCord;
-            //System.out.println(message);
+            message = timeStamp + " " + dxCord + " " + dyCord + " " + dzCord + " " + drxCord + " " + dryCord + " " + drzCord;
             ROBOT_LOGGER.debug(message);
 
             InetAddress IPAddress = receivePacket.getAddress();
@@ -129,16 +138,11 @@ public class MeasureServer extends Thread {
         int gyroYLow;
         int gyroZHigh;
         int gyroZLow;
-        int xTotal;
-        int yTotal;
-        int zTotal;
+        double xTotal;
+        double yTotal;
+        double zTotal;
         String message;
         String timeStamp = MicroTimestamp.INSTANCE.getMicro();
-        long startTime = System.nanoTime();
-        long endTime = System.nanoTime();
-        long executionTime;
-
-
 
         final I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
         I2CDevice device = bus.getDevice(ADDRESS);
@@ -156,7 +160,6 @@ public class MeasureServer extends Thread {
             while (isActive()) {
 
                 timeStamp = MicroTimestamp.INSTANCE.getMicro();
-                //startTime = System.nanoTime();
                 gyroXHigh = device.read(GYRO_XOUT_H_ADD);
                 gyroXLow = device.read(GYRO_XOUT_L_ADD);
                 gyroYHigh = device.read(GYRO_YOUT_H_ADD);
@@ -164,21 +167,14 @@ public class MeasureServer extends Thread {
                 gyroZHigh = device.read(GYRO_ZOUT_H_ADD);
                 gyroZLow = device.read(GYRO_ZOUT_L_ADD);
 
-                xTotal = Integer.valueOf(gyroXHigh + "" + gyroXLow, 16).shortValue();
-                yTotal = Integer.valueOf(gyroYHigh + "" + gyroYLow, 16).shortValue();
-                zTotal = Integer.valueOf(gyroZHigh + "" + gyroZLow, 16).shortValue();
+                xTotal = (Integer.valueOf(decimal2Hex(gyroXHigh) + "" + decimal2Hex(gyroXLow), 16).shortValue()/145.6);
+                yTotal = (Integer.valueOf(decimal2Hex(gyroYHigh) + "" + decimal2Hex(gyroYLow), 16).shortValue()/145.6);
+                zTotal = (Integer.valueOf(decimal2Hex(gyroZHigh) + "" + decimal2Hex(gyroZLow), 16).shortValue()/145.6);
 
-                message = timeStamp + ", " + xTotal + ", " + yTotal + ", " + zTotal;
+                message = timeStamp + " " + xTotal + " " + yTotal + " " + zTotal;
 
                 SENSOR_LOGGER.debug(message);
-                /**
-                endTime = System.nanoTime();
-                executionTime = (long)2000000 - (endTime - startTime);
-                System.out.println(executionTime);
-                if (executionTime > 0){
-                    while(System.nanoTime() - startTime < 2000000);
-                }*/
-            }
+           }
         }
     }
 }
